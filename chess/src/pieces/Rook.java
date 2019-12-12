@@ -7,8 +7,8 @@ import game.Square;
 
 import java.util.ArrayList;
 
-public class King extends Piece {
-    public King(Board board, Square square, Color color) {
+public class Rook extends Piece {
+    public Rook(Board board, Square square, Color color) {
         super(board, square, color);
     }
 

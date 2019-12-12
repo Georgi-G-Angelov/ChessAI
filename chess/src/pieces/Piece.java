@@ -10,15 +10,16 @@ import java.util.ArrayList;
 public abstract class Piece {
     private Square square = new Square();
     private Color color;
-    private Board board = new Board();
+    private Board board;
     private int x;
     private int y;
 
-    public Piece(Board board, Square square) {
+    public Piece(Board board, Square square, Color color) {
         this.square = square;
         x = square.getX();
         y = square.getY();
         this.board = board;
+        this.color = color;
     }
 
     public void setColor(Color color) {

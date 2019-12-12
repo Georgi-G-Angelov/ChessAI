@@ -10,8 +10,8 @@ import java.util.List;
 
 public class Pawn extends Piece {
 
-    public Pawn(Board board, Square square) {
-        super(board, square);
+    public Pawn(Board board, Square square, Color color) {
+        super(board, square, color);
     }
 
     @Override

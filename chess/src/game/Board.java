@@ -1,7 +1,6 @@
 package game;
 
-import pieces.Pawn;
-import pieces.Piece;
+import pieces.*;
 
 import java.util.Stack;
 
@@ -12,18 +11,11 @@ public class Board {
     private Square[][] board = new Square[8][8];
     Stack<Move> moves = new Stack<>();
 
-    //TO DO
     public Board() {
         fillBoard();
+        fillPawns();
+        fillPieces();
     }
-
-
-//    public Board(char whiteGap, char blackGap) {
-//        fillBoard();
-//        fillPawns();
-//        board[6][whiteGap - 'a'].setOccupier(Color.NONE);
-//        board[1][blackGap - 'a'].setOccupier(Color.NONE);
-//    }
 
     public Board(Square[][] board) {
         this.board = board;
@@ -37,16 +29,52 @@ public class Board {
         }
     }
 
-//    private void fillPawns() {
-//        for(int i = 0; i < 8; i++) {
-//            board[6][i].setOccupier(Color.WHITE);
-//            board[1][i].setOccupier(Color.BLACK);
-//        }
-//    }
+    private void fillPawns() {
+        for(int i = 0; i < 8; i++) {
+            board[6][i].setPiece(new Pawn(this, board[6][i], Color.WHITE));
+            board[1][i].setPiece(new Pawn(this, board[1][i], Color.BLACK));
+        }
+    }
 
-    //TO DO
     private void fillPieces() {
-
+        fillPawns();
+        Square square = new Square();
+        //Fill kings and queens
+        square = getSquare('e', 1);
+        square.setPiece(new King(this, square, Color.WHITE));
+        square = getSquare('d', 1);
+        square.setPiece(new Queen(this, square, Color.WHITE));
+        square = getSquare('e', 8);
+        square.setPiece(new King(this, square, Color.BLACK));
+        square = getSquare('d', 8);
+        square.setPiece(new Queen(this, square, Color.BLACK));
+        //Fill bishops
+        square = getSquare('c', 1);
+        square.setPiece(new Bishop(this, square, Color.WHITE));
+        square = getSquare('f', 1);
+        square.setPiece(new Bishop(this, square, Color.WHITE));
+        square = getSquare('c', 8);
+        square.setPiece(new Bishop(this, square, Color.BLACK));
+        square = getSquare('f', 8);
+        square.setPiece(new Bishop(this, square, Color.BLACK));
+        //Fill knights
+        square = getSquare('b', 1);
+        square.setPiece(new Knight(this, square, Color.WHITE));
+        square = getSquare('g', 1);
+        square.setPiece(new Knight(this, square, Color.WHITE));
+        square = getSquare('b', 8);
+        square.setPiece(new Knight(this, square, Color.BLACK));
+        square = getSquare('g', 8);
+        square.setPiece(new Knight(this, square, Color.BLACK));
+        //Fill rooks
+        square = getSquare('a', 1);
+        square.setPiece(new Rook(this, square, Color.WHITE));
+        square = getSquare('h', 1);
+        square.setPiece(new Rook(this, square, Color.WHITE));
+        square = getSquare('a', 8);
+        square.setPiece(new Rook(this, square, Color.BLACK));
+        square = getSquare('h', 8);
+        square.setPiece(new Rook(this, square, Color.BLACK));
     }
 
     public Square getSquare(int x, int y) {
@@ -54,6 +82,10 @@ public class Board {
             return board[y][x];
         }
         return null;
+    }
+
+    public Square getSquare(char file, int rank) {
+        return getSquare(file - 'a', 8 - rank);
     }
 
     public void applyMove(Move move) {
@@ -108,7 +140,6 @@ public class Board {
         return null;
     }
 
-    //TO DO
     public void display() {
         System.out.println("   A B C D E F G H");
         int counter = 8;
@@ -119,11 +150,43 @@ public class Board {
                     System.out.print(".");
                 }
                 if (square.occupiedBy() == Color.BLACK) {
-                    System.out.print((char) 9817);
+                    if (square.getPiece().getClass() == Pawn.class) {
+                        System.out.print((char) 9817);
+                    }
+                    if (square.getPiece().getClass() == King.class) {
+                        System.out.print((char) 9812);
+                    }
+                    if (square.getPiece().getClass() == Queen.class) {
+                        System.out.print((char) 9813);
+                    }
+                    if (square.getPiece().getClass() == Bishop.class) {
+                        System.out.print((char) 9815);
+                    }
+                    if (square.getPiece().getClass() == Knight.class) {
+                        System.out.print((char) 9816);
+                    }
+                    if (square.getPiece().getClass() == Rook.class) {
+                        System.out.print((char) 9814);
+                    }
                 }
                 if (square.occupiedBy() == Color.WHITE) {
                     if (square.getPiece().getClass() == Pawn.class) {
                         System.out.print((char) 9823);
+                    }
+                    if (square.getPiece().getClass() == King.class) {
+                        System.out.print((char) 9818);
+                    }
+                    if (square.getPiece().getClass() == Queen.class) {
+                        System.out.print((char) 9819);
+                    }
+                    if (square.getPiece().getClass() == Bishop.class) {
+                        System.out.print((char) 9821);
+                    }
+                    if (square.getPiece().getClass() == Knight.class) {
+                        System.out.print((char) 9822);
+                    }
+                    if (square.getPiece().getClass() == Rook.class) {
+                        System.out.print((char) 9820);
                     }
                 }
                 System.out.print(' ');
