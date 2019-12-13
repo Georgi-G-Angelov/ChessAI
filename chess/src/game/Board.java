@@ -9,7 +9,8 @@ import java.util.Stack;
 
 public class Board {
     private Square[][] board = new Square[8][8];
-    Stack<Move> moves = new Stack<>();
+    private Stack<Move> moves = new Stack<>();
+    private Piece lastTakenPiece = null;
 
     public Board() {
         fillBoard();
@@ -89,10 +90,20 @@ public class Board {
     }
 
     public void applyMove(Move move) {
+        //TO DO
+        //Fix movement of pieces after applying a move
         Square from = move.getFrom();
         Square to = move.getTo();
+        if (move.isCapture()) {
+            lastTakenPiece = to.getPiece();
+        }
         to.setOccupier(from.occupiedBy());
+        to.setPiece(from.getPiece());
         from.setOccupier(Color.NONE);
+
+        //possible fix
+        from.getPiece().setSquare(to);
+
         if(move.isEnPassantCapture() && to.occupiedBy() == Color.WHITE) {
             this.getSquare(to.getX(), to.getY() + 1).setOccupier(Color.NONE);
         }
@@ -102,11 +113,14 @@ public class Board {
         moves.push(move);
     }
 
+    //TO DO
+    //Same as apply move
     public void unapplyMove(Move move) {
         Square from = move.getTo();
         Square to = move.getFrom();
         to.setOccupier(from.occupiedBy());
         from.setOccupier(Color.NONE);
+        to.setPiece(from.getPiece());
         if(move.isEnPassantCapture() && to.occupiedBy() == Color.WHITE) {
             this.getSquare(from.getX(), from.getY() + 1).setOccupier(Color.BLACK);
             return;
@@ -117,10 +131,12 @@ public class Board {
         }
         if(move.isCapture() && to.occupiedBy() == Color.WHITE) {
             this.getSquare(from.getX(), from.getY()).setOccupier(Color.BLACK);
+            from.setPiece(lastTakenPiece);
             return;
         }
         if(move.isCapture() && to.occupiedBy() == Color.BLACK) {
             this.getSquare(from.getX(), from.getY()).setOccupier(Color.WHITE);
+            from.setPiece(lastTakenPiece);
         }
     }
 
@@ -204,51 +220,17 @@ public class Board {
             for (int j = 0; j < 8; j++) {
                 Square square = new Square(this.board[i][j].getX(), this.board[i][j].getX());
                 square.setOccupier(this.board[i][j].occupiedBy());
-                //Piece piece = (Piece) square.getPiece().clone();
                 board[i][j] = square;
+                if (this.board[i][j].getPiece() != null) {
+                    square.setPiece(this.board[i][j].getPiece().clone());
+                }
             }
         }
         return new Board(board);
     }
 
     // TO DO
-    public boolean isStalemate(Color currentPlayer) {
-        for (int i = 0; i < 8; i++) {
-            for (int j = 1; j < 7; j++) {
-                if (getSquare(i,j).occupiedBy() == currentPlayer) {
-                    if (currentPlayer == Color.BLACK) {
-                        if(getSquare(i, j + 1).occupiedBy() == Color.NONE) {
-                            return false;
-                        }
-                        if(getSquare(i - 1, j + 1) != null) {
-                            if(getSquare(i - 1, j + 1).occupiedBy() == Color.WHITE) {
-                                return false;
-                            }
-                        }
-                        if(getSquare(i + 1, j + 1) != null) {
-                            if(getSquare(i + 1, j + 1).occupiedBy() == Color.WHITE) {
-                                return false;
-                            }
-                        }
-                    }
-                    if (currentPlayer == Color.WHITE) {
-                        if(getSquare(i, j - 1).occupiedBy() == Color.NONE) {
-                            return false;
-                        }
-                        if(getSquare(i - 1, j - 1) != null) {
-                            if(getSquare(i - 1, j - 1).occupiedBy() == Color.BLACK) {
-                                return false;
-                            }
-                        }
-                        if(getSquare(i + 1, j - 1) != null) {
-                            if(getSquare(i + 1, j - 1).occupiedBy() == Color.BLACK) {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return true;
+    public boolean isStalemate(Player currentPlayer) {
+        return currentPlayer.getAllValidMoves().isEmpty();
     }
 }

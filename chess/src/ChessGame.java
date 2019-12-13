@@ -1,11 +1,8 @@
-import game.Board;
-import game.Color;
-import game.Game;
-import game.Player;
+import game.*;
 
 import java.util.Scanner;
 
-public class PawnRace {
+public class ChessGame {
     public static void main(String[] args) {
 
 
@@ -13,12 +10,32 @@ public class PawnRace {
         Game game = new Game(board);
         Player p1 = new Player(game, board, Color.WHITE, true);
         Player p2 = new Player(game, board, Color.BLACK, true);
+        game.setCurrentPlayer(p1);
         p1.setOpponent(p2);
         p2.setOpponent(p1);
-        board.display();
-
+        while (!game.isFinished()) {
+            p1.makeSmartMove();
+            game.setCurrentPlayer(p2);
+            board.display();
+            if (game.isFinished()) {
+                break;
+            }
+            p2.makeMove();
+            game.setCurrentPlayer(p1);
+            board.display();
+        }
         Scanner sc = new Scanner(System.in);
+//        p1.makeMove();
+//        p1.makeMove();
+//        p1.makeMove();
+//        p1.makeMove();
+//        p1.makeMove();
+//        p1.makeMove();
+//        board.display();
+//        p1.getAllValidMoves().forEach(move -> System.out.println(move));
 
+
+        //p1.getAllPieces().forEach(piece -> System.out.println(piece.getSquare().getX() + " " + piece.getSquare().getY()));
 //        while(!game.isFinished()) {
 //
 //            //p1.getAllPawns().forEach(pawn -> System.out.println(p1.isPassedPawn(pawn) + " " + pawn.getFile() + pawn.getRank()));

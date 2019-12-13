@@ -3,12 +3,14 @@ package game;
 import game.Board;
 import game.Color;
 import game.Square;
+import pieces.King;
+import pieces.Piece;
 
 
 //TO DO
 public class Game {
     private Board board;
-    private Color currentPlayer = Color.WHITE;
+    private Player currentPlayer;
 
     public Game(Board board) {
         this.board = board;
@@ -18,8 +20,12 @@ public class Game {
 
     }
 
-    public Color getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     public Move getLastMove() {
@@ -28,49 +34,58 @@ public class Game {
 
     public void applyMove(Move move) {
         board.applyMove(move);
-        togglePlayer();
+        //togglePlayer();
     }
 
     public void unapplyMove() {
         board.unapplyLast();
-        togglePlayer();
+        //togglePlayer();
     }
 
     private boolean isStalemate() {
         return board.isStalemate(currentPlayer);
     }
 
-    public Color getPotentialWinner() {
-        for (int i = 0; i < 8; i++) {
-            if (board.getSquare(i, 0).occupiedBy() == Color.WHITE) {
-                return Color.WHITE;
-            }
-            if (board.getSquare(i, 7).occupiedBy() == Color.BLACK) {
-                return Color.BLACK;
-            }
-        }
-        return Color.NONE;
-    }
+//    public Color getPotentialWinner() {
+//        for (int i = 0; i < 8; i++) {
+//            if (board.getSquare(i, 0).occupiedBy() == Color.WHITE) {
+//                return Color.WHITE;
+//            }
+//            if (board.getSquare(i, 7).occupiedBy() == Color.BLACK) {
+//                return Color.BLACK;
+//            }
+//        }
+//        return Color.NONE;
+//    }
 
     public boolean isFinished() {
-        return  isStalemate() || getPotentialWinner() != Color.NONE;
+        return  isStalemate() || hasWon(currentPlayer);
     }
 
-    public Color getGameResult() throws Exception{
-        if (isFinished()) {
-            return getPotentialWinner();
-        } else {
-            throw new Exception("game.Game not finished.");
+    public boolean hasWon(Player player) {
+        for (Piece piece : player.getOpponent().getAllPieces()) {
+            if (piece.getClass() == King.class) {
+                return false;
+            }
         }
+        return true;
     }
 
-    private void togglePlayer() {
-        if(currentPlayer == Color.WHITE) {
-            currentPlayer = Color.BLACK;
-        } else {
-            currentPlayer = Color.WHITE;
-        }
-    }
+//    public Color getGameResult() throws Exception{
+//        if (isFinished()) {
+//            return getPotentialWinner();
+//        } else {
+//            throw new Exception("game.Game not finished.");
+//        }
+//    }
+
+//    private void togglePlayer() {
+//        if(currentPlayer == Color.WHITE) {
+//            currentPlayer = Color.BLACK;
+//        } else {
+//            currentPlayer = Color.WHITE;
+//        }
+//    }
 
     //TO DO
     public Move parseMove(String input) {

@@ -1,6 +1,6 @@
 package game;
 
-import pieces.Piece;
+import pieces.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -18,6 +18,10 @@ public class Player {
         this.board = board;
         this.color = color;
         this.isComputerPlayer = isComputerPlayer;
+    }
+
+    public Player getOpponent() {
+        return opponent;
     }
 
     public void setOpponent(Player opponent) {
@@ -94,7 +98,7 @@ public class Player {
         ArrayList<Move> possibleMoves = new ArrayList<>();
         possibleMoves = getAllValidMoves();
         int index = rng.nextInt(possibleMoves.size());
-        game.applyMove(game.parseMove(possibleMoves.get(index).getSAN()));
+        game.applyMove(possibleMoves.get(index));
     }
 
     //TEST
@@ -102,21 +106,69 @@ public class Player {
         boolean isMaximizingPlayer;
         if (color == Color.WHITE) {
             isMaximizingPlayer = true;
-            minimax(board, 4, Integer.MIN_VALUE, Integer.MAX_VALUE, isMaximizingPlayer);
+            //minimax(board, 4, Integer.MIN_VALUE, Integer.MAX_VALUE, isMaximizingPlayer);
         } else {
             isMaximizingPlayer = false;
-            minimax(board, 6, Integer.MIN_VALUE, Integer.MAX_VALUE, isMaximizingPlayer);
+            //minimax(board, 6, Integer.MIN_VALUE, Integer.MAX_VALUE, isMaximizingPlayer);
         }
-        //minimax(board, 4, Integer.MIN_VALUE, Integer.MAX_VALUE, isMaximizingPlayer);
+        minimax(board, 5, Integer.MIN_VALUE, Integer.MAX_VALUE, isMaximizingPlayer);
         game.applyMove(nextMove);
     }
 
 
     //TO DO
     public int staticEvaluation(Board board) {
-        return 0;
+        int score = 0;
+        for (Piece piece : getAllPieces()) {
+            if (piece.getClass() == King.class) {
+                score = score + 2000;
+            }
+            if (piece.getClass() == Queen.class) {
+                score = score + 10;
+            }
+            if (piece.getClass() == Rook.class) {
+                score = score + 5;
+            }
+            if (piece.getClass() == Bishop.class) {
+                score = score + 3;
+            }
+            if (piece.getClass() == Knight.class) {
+                score = score + 3;
+            }
+            if (piece.getClass() == Pawn.class) {
+                score = score + 1;
+            }
+        }
+        for (Piece piece : opponent.getAllPieces()) {
+            if (piece.getClass() == King.class) {
+                score = score - 2000;
+            }
+            if (piece.getClass() == Queen.class) {
+                score = score - 10;
+            }
+            if (piece.getClass() == Rook.class) {
+                score = score - 5;
+            }
+            if (piece.getClass() == Bishop.class) {
+                score = score - 3;
+            }
+            if (piece.getClass() == Knight.class) {
+                score = score - 3;
+            }
+            if (piece.getClass() == Pawn.class) {
+                score = score - 1;
+            }
+        }
+        if (color == Color.WHITE) {
+            return score;
+        } else {
+            return -score;
+        }
+
     }
 
+    // BROKEN
+    // extremely broken
     private int minimax(Board board, int depth, int alpha, int beta, boolean isMaximizingPlayer) {
         if (depth == 0 || game.isFinished()) {
             return staticEvaluation(board);
@@ -130,7 +182,11 @@ public class Player {
                 move = moves.get(i);
                 Square from = newBoard.getSquare(move.getFrom().getX(), move.getFrom().getY());
                 Square to = newBoard.getSquare(move.getTo().getX(), move.getTo().getY());
-                newBoard.applyMove(new Move(from, to, false, false));
+                if (to.occupiedBy() == Color.BLACK) {
+                    newBoard.applyMove(new Move(from, to, true, false));
+                } else {
+                    newBoard.applyMove(new Move(from, to, false, false));
+                }
                 Board newerBoard = newBoard.clone();
                 newBoard.unapplyLast();
                 int evaluation = minimax(newerBoard, depth - 1, alpha, beta, false); // !!!!
@@ -152,7 +208,12 @@ public class Player {
                 move = moves.get(i);
                 Square from = newBoard.getSquare(move.getFrom().getX(), move.getFrom().getY());
                 Square to = newBoard.getSquare(move.getTo().getX(), move.getTo().getY());
-                newBoard.applyMove(new Move(from, to, false, false));
+                if (to.occupiedBy() == Color.WHITE) {
+                    newBoard.applyMove(new Move(from, to, true, false));
+                } else {
+                    newBoard.applyMove(new Move(from, to, false, false));
+
+                }
                 Board newerBoard = newBoard.clone();
                 newBoard.unapplyLast();
                 int evaluation = minimax(newerBoard, depth - 1, alpha, beta, true); // !!!!

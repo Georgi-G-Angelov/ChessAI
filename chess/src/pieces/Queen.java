@@ -14,6 +14,17 @@ public class Queen extends Piece {
 
     @Override
     public ArrayList<Move> getAllValidMoves() {
-        return null;
+        ArrayList<Move> possibleMoves = new ArrayList<>();
+        Board board = getBoard();
+        Rook asRook = new Rook(board, getSquare(), getColor());
+        possibleMoves.addAll(asRook.getAllValidMoves());
+        Bishop asBishop = new Bishop(board, getSquare(), getColor());
+        possibleMoves.addAll(asBishop.getAllValidMoves());
+        return possibleMoves;
+    }
+
+    @Override
+    public Piece clone() {
+        return new Queen(getBoard(), getSquare(), getColor());
     }
 }

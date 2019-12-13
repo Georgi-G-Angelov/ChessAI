@@ -4,6 +4,7 @@ import game.Board;
 import game.Color;
 import game.Move;
 import game.Square;
+import javafx.scene.effect.Blend;
 
 import java.util.ArrayList;
 
@@ -32,6 +33,8 @@ public abstract class Piece {
 
     public abstract ArrayList<Move> getAllValidMoves();
 
+    public abstract Piece clone();
+
     public Square getSquare() {
         return square;
     }
@@ -48,4 +51,9 @@ public abstract class Piece {
         this.board = board;
     }
 
+    public Color getOppositeColor() {
+        if (color == Color.BLACK) return Color.WHITE;
+        if (color == Color.WHITE) return Color.BLACK;
+        throw new AssertionError("Colour can only be black or white");
+    }
 }
