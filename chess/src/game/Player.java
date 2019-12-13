@@ -117,6 +117,7 @@ public class Player {
 
 
     //TO DO
+    //Fix
     public int staticEvaluation(Board board) {
         int score = 0;
         for (Piece piece : getAllPieces()) {
@@ -158,6 +159,9 @@ public class Player {
             if (piece.getClass() == Pawn.class) {
                 score = score - 1;
             }
+        }
+        if (game.hasWon(this)) {
+            score = Integer.MAX_VALUE;
         }
         if (color == Color.WHITE) {
             return score;

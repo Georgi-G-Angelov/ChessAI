@@ -17,12 +17,16 @@ public class ChessGame {
             p1.makeSmartMove();
             game.setCurrentPlayer(p2);
             board.display();
+            System.out.println("White eval : " + p1.staticEvaluation(board));
+            System.out.println("Black eval : " + p2.staticEvaluation(board));
             if (game.isFinished()) {
                 break;
             }
             p2.makeMove();
             game.setCurrentPlayer(p1);
             board.display();
+            System.out.println("White eval : " + p1.staticEvaluation(board));
+            System.out.println("Black eval : " + p2.staticEvaluation(board));
         }
         Scanner sc = new Scanner(System.in);
 //        p1.makeMove();
