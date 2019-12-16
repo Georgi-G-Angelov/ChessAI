@@ -14,7 +14,7 @@ public class ChessGame {
         p1.setOpponent(p2);
         p2.setOpponent(p1);
         while (!game.isFinished()) {
-            p1.makeSmartMove();
+            p1.makeMove();
             game.setCurrentPlayer(p2);
             board.display();
             System.out.println("White eval : " + p1.staticEvaluation(board));
@@ -22,7 +22,7 @@ public class ChessGame {
             if (game.isFinished()) {
                 break;
             }
-            p2.makeMove();
+            p2.makeSmartMove();
             game.setCurrentPlayer(p1);
             board.display();
             System.out.println("White eval : " + p1.staticEvaluation(board));
