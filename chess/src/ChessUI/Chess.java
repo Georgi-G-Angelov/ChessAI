@@ -25,11 +25,14 @@ public class Chess {
         window.setIconImage(image);
         window.setResizable(false);
 
-        boardDrawingComponent component = new boardDrawingComponent();
+        BoardDrawingComponent component = new BoardDrawingComponent();
+
+        //component.addPiece(new pieceImage());
+
         window.add(component);
 
         window.setVisible(true);
 
-        //window.revalidate();
+        window.revalidate();
     }
 }

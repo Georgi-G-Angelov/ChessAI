@@ -10,8 +10,18 @@ import java.awt.image.ImageObserver;
 import java.awt.image.renderable.RenderableImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class boardDrawingComponent extends JComponent {
+public class BoardDrawingComponent extends JComponent {
+    private ArrayList<PieceImage> pieces = new ArrayList<>();
+    private final int SQUARE_SIZE = 80;
+    private final int SPACE_TO_LEFT = 40;
+    private final int SPACE_TO_TOP = 40;
+
+    public void addPiece (PieceImage piece) {
+        pieces.add(piece);
+    }
+
     public void paintComponent (Graphics graphics) {
         Graphics2D graphics2D = (Graphics2D) graphics;
 
@@ -42,25 +52,11 @@ public class boardDrawingComponent extends JComponent {
             y = y + 80;
         }
 
+        for (PieceImage piece : pieces) {
+            drawPiece(piece, graphics2D);
+        }
 
-//        Ellipse2D.Double ellipse = new Ellipse2D.Double(100,100,50,50);
-//        graphics2D.fill(ellipse);
-//
-//        Line2D.Double line = new Line2D.Double(150, 150, 100, 50);
-//        graphics2D.draw(line);
-//
-//        Point2D.Double point1 = new Point2D.Double(200, 200);
-//        Point2D.Double point2 = new Point2D.Double(500, 200);
-//
-//        Line2D.Double line2 = new Line2D.Double(point1, point2);
-//        graphics2D.draw(line2);
-//
-//        graphics2D.setFont(new Font("serif", Font.BOLD + Font.ITALIC, 14));
-//        graphics2D.drawString("String time", 400, 400);
-
-        //Image image = Toolkit.getDefaultToolkit().getImage("black_pawn.png");
-        //File file = new File("black_pawn.png");
-        //System.out.println(file.getPath());
+        /*
 
         //Print black pawns
         Image image = null;
@@ -225,6 +221,7 @@ public class boardDrawingComponent extends JComponent {
         x = 40 + 25;
         y = 600 + 10;
         graphics2D.drawImage(image, x, y, 30, 60, this);
+        */
 
         //Print files and ranks
         graphics2D.setColor(Color.BLACK);
@@ -239,5 +236,21 @@ public class boardDrawingComponent extends JComponent {
         }
 
 
+    }
+
+    private void drawPiece(PieceImage piece, Graphics2D graphics2D) {
+        //Print piece
+        Image image = null;
+        try {
+            image = ImageIO.read(new File(piece.getPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int x = SPACE_TO_LEFT + SQUARE_SIZE*((int)piece.getFile() - 'A') + (SQUARE_SIZE - piece.getWidth()) / 2;
+                //360 + 25;
+        int y = SPACE_TO_TOP + SQUARE_SIZE*(8 - piece.getRank()) + (SQUARE_SIZE - piece.getHeight()) / 2;
+                //600 + 10;
+        graphics2D.drawImage(image, x, y, getWidth(), getHeight(), this);
     }
 }
