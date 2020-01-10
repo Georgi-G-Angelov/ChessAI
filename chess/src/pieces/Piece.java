@@ -14,13 +14,19 @@ public abstract class Piece {
     private Board board;
     private int x;
     private int y;
+    private String name;
 
-    public Piece(Board board, Square square, Color color) {
+    public Piece(Board board, Square square, Color color, String name) {
         this.square = square;
         x = square.getX();
         y = square.getY();
         this.board = board;
         this.color = color;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setColor(Color color) {

@@ -1,5 +1,10 @@
 package ChessUI;
 
+import game.Board;
+import game.Game;
+import game.Player;
+import pieces.Piece;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +25,40 @@ public class BoardDrawingComponent extends JComponent {
 
     public void addPiece (PieceImage piece) {
         pieces.add(piece);
+    }
+
+    public ArrayList<PieceImage> getPieces () {
+        return pieces;
+    }
+
+    public void setPieces (Game game) {
+        pieces.removeAll(pieces);
+        Player p1 = game.getCurrentPlayer();
+        Player p2 = p1.getOpponent();
+        for (Piece piece : p1.getAllPieces()) {
+            int rank = 8 - piece.getSquare().getY();
+            char file = (char) ('A' + piece.getSquare().getX());
+            String path = "images/" + p1.getColor().toString().toLowerCase() + "_" + piece.getName() + ".png";
+            int height;
+            if (piece.getName().equals("pawn")) {
+                height = 50;
+            } else {
+                height = 60;
+            }
+            pieces.add(new PieceImage(rank, file, path, 30, height));
+        }
+        for (Piece piece : p2.getAllPieces()) {
+            int rank = 8 - piece.getSquare().getY();
+            char file = (char) ('A' + piece.getSquare().getX());
+            String path = "images/" + p2.getColor().toString().toLowerCase() + "_" + piece.getName() + ".png";
+            int height;
+            if (piece.getName().equals("pawn")) {
+                height = 50;
+            } else {
+                height = 60;
+            }
+            pieces.add(new PieceImage(rank, file, path, 30, height));
+        }
     }
 
     public void paintComponent (Graphics graphics) {
@@ -53,8 +92,8 @@ public class BoardDrawingComponent extends JComponent {
         }
 
         //Draw pieces
-        for (PieceImage piece : pieces) {
-            drawPiece(piece, graphics2D);
+        for (int i = 0; i < pieces.size(); i++) {
+            drawPiece(pieces.get(i), graphics2D);
         }
 
         //Print files and ranks

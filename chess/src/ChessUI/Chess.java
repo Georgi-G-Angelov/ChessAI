@@ -1,9 +1,16 @@
 package ChessUI;
+import game.Board;
+import game.Color;
+import game.Game;
+import game.Player;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Chess {
     public static void main(String[] args) {
@@ -30,10 +37,75 @@ public class Chess {
         addAllPieces(component);
 
         window.add(component);
-
         window.setVisible(true);
-
         window.revalidate();
+
+        MouseComponent mouse = new MouseComponent(window);
+        window.addMouseListener(mouse);
+        System.out.println(window.getInsets().top);
+//
+//        Scanner sc = new Scanner(System.in);
+//        char n = sc.next().charAt(0);
+//        ArrayList<PieceImage> pieces = component.getPieces();
+//        for (int i = 0; i < pieces.size(); i++) {
+//            if (pieces.get(i).getFile() == n) {
+//                pieces.get(i).setRank(pieces.get(i).getRank() + 1);
+//            }
+//        }
+//
+//        component.repaint();
+
+        Board board = new Board();
+        Game game = new Game(board);
+        Player p1 = new Player(game, board, Color.WHITE, true);
+        Player p2 = new Player(game, board, Color.BLACK, true);
+        game.setCurrentPlayer(p1);
+        p1.setOpponent(p2);
+        p2.setOpponent(p1);
+        board.display();
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+
+        while (!game.isFinished()) {
+            p1.makeSmartMove();
+            game.setCurrentPlayer(p2);
+            component.setPieces(game);
+            component.repaint();
+            board.display();
+            System.out.println("White eval : " + p1.staticEvaluation(board));
+            System.out.println("Black eval : " + p2.staticEvaluation(board));
+            if (game.isFinished()) {
+                break;
+            }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            p2.makeMove();
+            game.setCurrentPlayer(p1);
+            component.setPieces(game);
+            component.repaint();
+            board.display();
+            System.out.println("White eval : " + p1.staticEvaluation(board));
+            System.out.println("Black eval : " + p2.staticEvaluation(board));
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+//        component.setPieces(game);
+//        component.repaint();
     }
 
     private static void addAllPieces(BoardDrawingComponent component) {

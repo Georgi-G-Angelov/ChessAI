@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Rook extends Piece {
     public Rook(Board board, Square square, Color color) {
-        super(board, square, color);
+        super(board, square, color, "rook");
     }
 
     @Override
