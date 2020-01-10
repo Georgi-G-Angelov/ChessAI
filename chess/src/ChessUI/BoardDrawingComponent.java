@@ -52,176 +52,10 @@ public class BoardDrawingComponent extends JComponent {
             y = y + 80;
         }
 
+        //Draw pieces
         for (PieceImage piece : pieces) {
             drawPiece(piece, graphics2D);
         }
-
-        /*
-
-        //Print black pawns
-        Image image = null;
-        try {
-            image = ImageIO.read(new File("images/black_pawn.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        x = 40 + 25;
-        y = 120 + 15;
-        for (int i = 0; i < 8; i++) {
-            graphics2D.drawImage(image, x, y, 30, 50, this);
-            x = x + 80;
-        }
-
-        //Print black queen
-        try {
-            image = ImageIO.read(new File("images/black_queen.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        x = 280 + 25;
-        y = 40 + 10;
-        graphics2D.drawImage(image, x, y, 30, 60, this);
-
-        //Print black king
-        try {
-            image = ImageIO.read(new File("images/black_king.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        x = 360 + 25;
-        y = 40 + 10;
-        graphics2D.drawImage(image, x, y, 30, 60, this);
-
-        //Print black bishops
-        try {
-            image = ImageIO.read(new File("images/black_bishop.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        x = 440 + 25;
-        y = 40 + 10;
-        graphics2D.drawImage(image, x, y, 30, 60, this);
-
-        x = 200 + 25;
-        y = 40 + 10;
-        graphics2D.drawImage(image, x, y, 30, 60, this);
-
-        //Print black knights
-        try {
-            image = ImageIO.read(new File("images/black_knight.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        x = 520 + 25;
-        y = 40 + 10;
-        graphics2D.drawImage(image, x, y, 30, 60, this);
-
-        x = 120 + 25;
-        y = 40 + 10;
-        graphics2D.drawImage(image, x, y, 30, 60, this);
-
-        //Print black rooks
-        try {
-            image = ImageIO.read(new File("images/black_rook.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        x = 600 + 25;
-        y = 40 + 10;
-        graphics2D.drawImage(image, x, y, 30, 60, this);
-
-        x = 40 + 25;
-        y = 40 + 10;
-        graphics2D.drawImage(image, x, y, 30, 60, this);
-
-        //------------------------------------------------------------------//
-        //Print black pawns
-        try {
-            image = ImageIO.read(new File("images/white_pawn.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        x = 40 + 25;
-        y = 520 + 15;
-        for (int i = 0; i < 8; i++) {
-            graphics2D.drawImage(image, x, y, 30, 50, this);
-            x = x + 80;
-        }
-
-        //Print white queen
-        try {
-            image = ImageIO.read(new File("images/white_queen.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        x = 280 + 25;
-        y = 600 + 10;
-        graphics2D.drawImage(image, x, y, 30, 60, this);
-
-        //Print white king
-        try {
-            image = ImageIO.read(new File("images/white_king.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        x = 360 + 25;
-        y = 600 + 10;
-        graphics2D.drawImage(image, x, y, 30, 60, this);
-
-        //Print white bishops
-        try {
-            image = ImageIO.read(new File("images/white_bishop.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        x = 440 + 25;
-        y = 600 + 10;
-        graphics2D.drawImage(image, x, y, 30, 60, this);
-
-        x = 200 + 25;
-        y = 600 + 10;
-        graphics2D.drawImage(image, x, y, 30, 60, this);
-
-        //Print white knights
-        try {
-            image = ImageIO.read(new File("images/white_knight.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        x = 520 + 25;
-        y = 600 + 10;
-        graphics2D.drawImage(image, x, y, 30, 60, this);
-
-        x = 120 + 25;
-        y = 600 + 10;
-        graphics2D.drawImage(image, x, y, 30, 60, this);
-
-        //Print white rooks
-        try {
-            image = ImageIO.read(new File("images/white_rook.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        x = 600 + 25;
-        y = 600 + 10;
-        graphics2D.drawImage(image, x, y, 30, 60, this);
-
-        x = 40 + 25;
-        y = 600 + 10;
-        graphics2D.drawImage(image, x, y, 30, 60, this);
-        */
 
         //Print files and ranks
         graphics2D.setColor(Color.BLACK);
@@ -234,8 +68,6 @@ public class BoardDrawingComponent extends JComponent {
             graphics2D.drawString((8-i) + "", 690, (i+1) * 80 + 10);
 
         }
-
-
     }
 
     private void drawPiece(PieceImage piece, Graphics2D graphics2D) {
@@ -251,6 +83,6 @@ public class BoardDrawingComponent extends JComponent {
                 //360 + 25;
         int y = SPACE_TO_TOP + SQUARE_SIZE*(8 - piece.getRank()) + (SQUARE_SIZE - piece.getHeight()) / 2;
                 //600 + 10;
-        graphics2D.drawImage(image, x, y, getWidth(), getHeight(), this);
+        graphics2D.drawImage(image, x, y, piece.getWidth(), piece.getHeight(), this);
     }
 }
