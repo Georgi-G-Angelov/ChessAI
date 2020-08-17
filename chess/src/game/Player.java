@@ -4,6 +4,7 @@ import pieces.*;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Player {
     private Game game = new Game();
@@ -97,8 +98,32 @@ public class Player {
         Random rng = new Random();
         ArrayList<Move> possibleMoves = new ArrayList<>();
         possibleMoves = getAllValidMoves();
+        for (Move move : possibleMoves) {
+            System.out.println(move.getSAN());
+        }
         int index = rng.nextInt(possibleMoves.size());
         game.applyMove(possibleMoves.get(index));
+    }
+
+    public void takeMove() {
+        ArrayList<Move> possibleMoves = new ArrayList<>();
+        possibleMoves = getAllValidMoves();
+        Scanner sc = new Scanner(System.in);
+        String moveSAN;
+        Move nextMove = new Move();
+        boolean isMoveFound = false;
+        while (!isMoveFound) {
+            System.out.println(this.color.toString() + " to move:");
+            moveSAN = sc.next();
+            for (Move move : possibleMoves) {
+                if (move.getSAN().equals(moveSAN)) {
+                    nextMove = move;
+                    isMoveFound = true;
+                    break;
+                }
+            }
+        }
+        game.applyMove(nextMove);
     }
 
     //TEST
@@ -161,8 +186,9 @@ public class Player {
             }
         }
         if (game.hasWon(this)) {
-            score = Integer.MAX_VALUE;
+            score = Integer.MAX_VALUE / 2;
         }
+
         if (color == Color.WHITE) {
             return score;
         } else {
@@ -191,9 +217,9 @@ public class Player {
                 } else {
                     newBoard.applyMove(new Move(from, to, false, false));
                 }
-                Board newerBoard = newBoard.clone();
-                newBoard.unapplyLast();
-                int evaluation = minimax(newerBoard, depth - 1, alpha, beta, false); // !!!!
+//                Board newerBoard = newBoard.clone();
+//                newBoard.unapplyLast();
+                int evaluation = minimax(newBoard, depth - 1, alpha, beta, false); // !!!!
                 if (evaluation > alpha) {
                     nextMove = moves.get(i);
                 }
@@ -218,9 +244,9 @@ public class Player {
                     newBoard.applyMove(new Move(from, to, false, false));
 
                 }
-                Board newerBoard = newBoard.clone();
-                newBoard.unapplyLast();
-                int evaluation = minimax(newerBoard, depth - 1, alpha, beta, true); // !!!!
+//                Board newerBoard = newBoard.clone();
+//                newBoard.unapplyLast();
+                int evaluation = minimax(newBoard, depth - 1, alpha, beta, true); // !!!!
                 if (evaluation < beta) {
                     nextMove = moves.get(i);
                 }

@@ -124,4 +124,19 @@ public class BoardDrawingComponent extends JComponent {
                 //600 + 10;
         graphics2D.drawImage(image, x, y, piece.getWidth(), piece.getHeight(), this);
     }
+
+    public void updateBoard() {
+        Graphics2D graphics2D = (Graphics2D) this.getGraphics();
+
+
+
+        graphics2D.setColor(new Color(4, 103, 1));
+        graphics2D.fillRect(0, 0, 420, 450);
+    }
+
+    public void paintRectangle(Rectangle rectangle) {
+        Graphics2D graphics2D = (Graphics2D) this.getGraphics();
+        graphics2D.setColor(new Color(0, 255, 0));
+        graphics2D.fill(rectangle);
+    }
 }

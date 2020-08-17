@@ -39,7 +39,7 @@ public class Move {
         if(isCapture || isEnPassantCapture) {
             return from.getFile() + "x" + to.getFile() + to.getRank();
         }
-        return to.getFile() + to.getRank();
+        return from.getFile() + from.getRank() + to.getFile() + to.getRank();
     }
 
     public String toString() {
